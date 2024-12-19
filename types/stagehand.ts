@@ -62,6 +62,7 @@ export interface ActResult {
   success: boolean;
   message: string;
   action: string;
+  xpaths?: any;
 }
 
 export interface ExtractOptions<T extends z.AnyZodObject> {

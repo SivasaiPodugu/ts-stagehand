@@ -986,7 +986,14 @@ export class StagehandActHandler {
     previousSelectors: string[];
     skipActionCacheForThisStep: boolean;
     domSettleTimeoutMs?: number;
-  }): Promise<{ success: boolean; message: string; action: string }> {
+  }): Promise<{
+    success: boolean;
+    message: string;
+    action: string;
+    xpaths?: any;
+  }> {
+    let elementId: number = null;
+    let xpaths = null;
     try {
       await this.waitForSettledDom(domSettleTimeoutMs);
       await this.startDomDebug();
@@ -1228,8 +1235,8 @@ export class StagehandActHandler {
       }
 
       // Action found, proceed to execute
-      const elementId = response["element"];
-      const xpaths = selectorMap[elementId];
+      elementId = response["element"];
+      xpaths = selectorMap[elementId];
       const method = response["method"];
       const args = response["args"];
 
@@ -1390,6 +1397,7 @@ export class StagehandActHandler {
             success: true,
             message: `Action completed successfully: ${steps}${response.step}`,
             action: action,
+            xpaths: xpaths,
           };
         }
       } catch (error) {
@@ -1440,6 +1448,7 @@ export class StagehandActHandler {
           success: false,
           message: "error performing action - a",
           action: action,
+          xpaths: xpaths,
         };
       }
     } catch (error) {
@@ -1468,6 +1477,7 @@ export class StagehandActHandler {
         success: false,
         message: `Error performing action - C: ${error.message}`,
         action: action,
+        xpaths: xpaths,
       };
     }
   }
