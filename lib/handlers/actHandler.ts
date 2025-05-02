@@ -920,6 +920,7 @@ export class StagehandActHandler {
             success: true,
             message: "action completed successfully using cached step",
             action,
+            xpaths: previousSelectors,
           };
         }
       }
